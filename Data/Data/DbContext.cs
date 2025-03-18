@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Data.Models;
 using Data.Services;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Design;
 
 namespace Data.Data
 {
@@ -14,7 +15,7 @@ namespace Data.Data
         public DbSet<TaxPayer> TaxPayers { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer($"data source=DESKTOP-7R8OIVU\\SQLEXPRESS01;initial catalog=TaxPayers;Trusted_Connection=True;TrustServerCertificate=True");
+            optionsBuilder.UseSqlServer($"data source=DESKTOP-7R8OIVU\\SQLEXPRESS01;initial catalog=TaxPayers3;Trusted_Connection=True;TrustServerCertificate=True");
         }
     }
 }

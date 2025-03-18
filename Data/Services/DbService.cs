@@ -8,42 +8,76 @@ namespace Data.Services
         private readonly serverDbContext _context;
         public DbService(serverDbContext context)
         {
+
             _context = context;
         }
 
-        public bool CreateTable(string name, string address, int taxpayer, int postalcode)
+        public string CreateTable(string name, string address, int taxpayer, int postalcode)
         {
             try
             {
-                if (!_context.TaxPayers.Any(o => o.Id == taxpayer))
+                if (_context.TaxPayers.Find(taxpayer) != null)
                 {
-                    var taxp = new TaxPayer
-                    {
-                        Name = name,
-                        Address = address,
-                        Id = taxpayer,
-                        PostalCode = postalcode
-                    };
-                    _context.TaxPayers.Add(taxp);
-                    _context.SaveChanges();
-                    return true;
+                    return "Tax Payer Already Exists";
                 }
-                else
+                var taxp = new TaxPayer
                 {
-                    return false;
-                }
+                    Name = name,
+                    Address = address,
+                    Id = taxpayer,
+                    PostalCode = postalcode
+                };
+                _context.TaxPayers.Add(taxp);
+                _context.SaveChanges();
+                return "Success";
             }
-            catch
+            catch (Exception ex)
+            {
+                return "Failed" + ex.Message;
+            }
+        }
+
+        public TaxPayer[] queryDatabase()
+        {
+            return _context.TaxPayers.ToArray();
+        }
+        public string DeleteTable(TaxPayer taxpayer)
+        {
+            try
+            {
+                _context.TaxPayers.Remove(taxpayer);
+                return "Success";
+            }
+            catch (Exception ex)
+            {
+                return "Failed" + ex.Message;
+            }
+        }
+        public bool SaveChanges()
+        {
+            try
+            {
+                _context.SaveChanges();
+                return true;
+            }
+            catch (Exception ex)
             {
                 return false;
             }
         }
-
-        public List<TaxPayer> queryDatabase()
+        public bool UpdateTable(TaxPayer taxpayer, string key,string value)
         {
-            return _context.TaxPayers.ToList();
+            try
+            {
+                var Type = taxpayer.GetType().GetProperty(key).PropertyType;
+                var val = Convert.ChangeType(value, Type);
+                taxpayer.GetType().GetProperty(key).SetValue(taxpayer, val);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
         }
-
-
     }
 }
