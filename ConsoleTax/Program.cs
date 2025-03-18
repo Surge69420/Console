@@ -1,4 +1,6 @@
-﻿using Data;
+﻿using Data.Services;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
 namespace ConsoleTax
 {
@@ -6,7 +8,8 @@ namespace ConsoleTax
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello, World!");
+            var builder = Host.CreateApplicationBuilder(args);
+            builder.Services.AddScoped<DbService>();
         }
     }
 }

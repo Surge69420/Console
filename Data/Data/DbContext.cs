@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Data.Data
 {
-    class serverDbContext : DbContext
+    public class serverDbContext : DbContext
     {
         public DbSet<TaxPayer> TaxPayers { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
